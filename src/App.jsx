@@ -1,204 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useSpring, useTransform } from 'framer-motion';
+import Background3D from "./components/Background3D";
 import { 
   Shield, Server, Code2, Database, Cpu, 
   ShoppingCart, GraduationCap, Utensils, CalendarCheck, Briefcase, 
-  Mail, Phone, Copy, Check, Terminal, Layers, Globe, Zap, Award, Sparkles, ArrowRight, Lock,
-  Moon, Sun, Hexagon, Triangle
+  Phone, Copy, Check, Terminal, Layers, Globe, Zap, Sparkles, ArrowRight, Lock,
+  Moon, Sun
 } from 'lucide-react';
-
-const AnimatedCounter = ({ value, label, isDark }) => {
-  const [count, setCount] = useState(0);
-  const ref = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) setIsVisible(true);
-    });
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    if (!isVisible) return;
-    let current = 0;
-    const target = parseInt(value);
-    const increment = target / 50;
-    const interval = setInterval(() => {
-      current += increment;
-      if (current >= target) {
-        setCount(target);
-        clearInterval(interval);
-      } else {
-        setCount(Math.floor(current));
-      }
-    }, 30);
-    return () => clearInterval(interval);
-  }, [isVisible, value]);
-
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ scale: 0, opacity: 0 }}
-      whileInView={{ scale: 1, opacity: 1 }}
-      viewport={{ once: true }}
-      className="text-center"
-    >
-      <motion.p className={`text-5xl font-black transition-colors duration-700 ${isDark ? 'text-cyan-400' : 'text-amber-600'}`}>
-        {count}+
-      </motion.p>
-      <p className={`text-sm font-semibold mt-2 transition-colors duration-700 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-        {label}
-      </p>
-    </motion.div>
-  );
-};
-
-const AnimatedBackground = ({ isDark }) => {
-  const particles = Array.from({ length: 50 });
-
-  return (
-    <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
-
-      {/* Moving Cyber Grid */}
-      <motion.div
-        animate={{
-          backgroundPosition: ["0px 0px", "0px 120px"],
-        }}
-        transition={{
-          duration: 15,
-          repeat: Infinity,
-          ease: "linear",
-        }}
-        className="absolute inset-0 opacity-[0.07]"
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, rgba(6,182,212,0.3) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(6,182,212,0.3) 1px, transparent 1px)
-          `,
-          backgroundSize: "60px 60px",
-        }}
-      />
-
-      {/* Existing Glow Blob 1 */}
-      <motion.div
-        animate={{
-          scale: [1, 1.2, 1],
-          opacity: [0.3, 0.5, 0.3],
-        }}
-        transition={{ duration: 8, repeat: Infinity }}
-        className={`absolute top-20 left-10 w-72 h-72 rounded-full blur-3xl ${
-          isDark ? "bg-cyan-500/30" : "bg-amber-400/20"
-        }`}
-      />
-
-      {/* Existing Glow Blob 2 */}
-      <motion.div
-        animate={{
-          scale: [1.2, 1, 1.2],
-          opacity: [0.2, 0.4, 0.2],
-        }}
-        transition={{ duration: 10, repeat: Infinity, delay: 1 }}
-        className={`absolute top-40 right-20 w-96 h-96 rounded-full blur-3xl ${
-          isDark ? "bg-purple-500/30" : "bg-orange-400/20"
-        }`}
-      />
-
-      {/* Existing Glow Blob 3 */}
-      <motion.div
-        animate={{
-          scale: [1, 1.3, 1],
-          opacity: [0.25, 0.45, 0.25],
-        }}
-        transition={{ duration: 9, repeat: Infinity, delay: 2 }}
-        className={`absolute bottom-20 left-1/2 w-80 h-80 rounded-full blur-3xl ${
-          isDark ? "bg-emerald-500/20" : "bg-cyan-400/15"
-        }`}
-      />
-
-      {/* Floating Particles */}
-      {particles.map((_, i) => (
-        <motion.div
-          key={i}
-          className={`absolute rounded-full ${
-            isDark ? "bg-cyan-400/40" : "bg-amber-400/40"
-          }`}
-          style={{
-            width: `${Math.random() * 6 + 2}px`,
-            height: `${Math.random() * 6 + 2}px`,
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-          }}
-          animate={{
-            y: [-20, 20, -20],
-            x: [-15, 15, -15],
-            opacity: [0.2, 1, 0.2],
-            scale: [1, 1.8, 1],
-          }}
-          transition={{
-            duration: Math.random() * 8 + 6,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
-      ))}
-
-      {/* Floating Hexagon */}
-      <motion.div
-        animate={{
-          y: [0, -40, 0],
-          rotate: [0, 180, 360],
-        }}
-        transition={{
-          duration: 16,
-          repeat: Infinity,
-          ease: "linear",
-        }}
-        className={`absolute top-1/3 left-1/4 opacity-15 ${
-          isDark ? "text-cyan-500" : "text-amber-500"
-        }`}
-      >
-        <Hexagon className="w-40 h-40" />
-      </motion.div>
-
-      {/* Floating Triangle */}
-      <motion.div
-        animate={{
-          y: [0, 50, 0],
-          rotate: [360, 180, 0],
-        }}
-        transition={{
-          duration: 20,
-          repeat: Infinity,
-          ease: "linear",
-        }}
-        className={`absolute bottom-1/4 right-1/4 opacity-15 ${
-          isDark ? "text-purple-500" : "text-orange-400"
-        }`}
-      >
-        <Triangle className="w-44 h-44" />
-      </motion.div>
-
-    </div>
-  );
-};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -260,6 +68,93 @@ const servicesOffered = [
   { title: "Application Hardening", desc: "Subjecting codebase architectures to rigorous offensive security auditing to neutralize SQL injection, cross-site scripting, and unauthorized API scraping.", icon: <Shield className="w-6 h-6 text-indigo-400"/>, tag: "Cybersecurity", border: "hover:border-indigo-500/50" },
 ];
 
+const heroStats = [
+  { value: "2+", label: "Years", detail: "full-stack builds" },
+  { value: "12", label: "Core tools", detail: "frontend to systems" },
+  { value: "100%", label: "Focus", detail: "secure delivery" },
+];
+
+const heroSignals = [
+  { label: "React interfaces", icon: <Code2 className="w-4 h-4" /> },
+  { label: "API architecture", icon: <Server className="w-4 h-4" /> },
+  { label: "Database design", icon: <Database className="w-4 h-4" /> },
+  { label: "Security review", icon: <Shield className="w-4 h-4" /> },
+];
+
+const orbitBadges = [
+  { label: "React", className: "left-0 top-8", delay: 0 },
+  { label: "Node", className: "right-0 top-14", delay: 0.25 },
+  { label: "SQL", className: "left-3 bottom-20", delay: 0.5 },
+  { label: "C++", className: "right-4 bottom-10", delay: 0.75 },
+];
+
+const heroCodeSnippets = [
+  "const secure = true;",
+  "npm run build",
+  "api.status(200)",
+  "db.index({ speed: 1 })",
+];
+
+const processSteps = [
+  "Audit",
+  "Design",
+  "Build",
+  "Harden",
+  "Launch",
+];
+
+const typewriterPhrases = [
+  "I build secure full-stack systems.",
+  "I craft fast React experiences.",
+  "I harden APIs before launch.",
+  "I connect software with hardware.",
+];
+
+const TypewriterText = ({ phrases, isDark }) => {
+  const [phraseIndex, setPhraseIndex] = useState(0);
+  const [displayText, setDisplayText] = useState("");
+ const [isDeleting, setIsDeleting] = useState(false);
+
+  useEffect(() => {
+    const currentPhrase = phrases[phraseIndex];
+    const isComplete = displayText === currentPhrase;
+    const isEmpty = displayText === "";
+    const delay = isComplete ? 1300 : isDeleting ? 34 : 58;
+
+    const timeout = setTimeout(() => {
+      if (!isDeleting && isComplete) {
+        setIsDeleting(true);
+        return;
+      }
+
+      if (isDeleting && isEmpty) {
+        setIsDeleting(false);
+        setPhraseIndex((current) => (current + 1) % phrases.length);
+        return;
+      }
+
+      setDisplayText((current) => (
+        isDeleting
+          ? currentPhrase.slice(0, current.length - 1)
+          : currentPhrase.slice(0, current.length + 1)
+      ));
+    }, delay);
+
+    return () => clearTimeout(timeout);
+  }, [displayText, isDeleting, phraseIndex, phrases]);
+
+  return (
+    <span className="inline-flex min-h-7 items-center">
+      <span>{displayText}</span>
+      <motion.span
+        animate={{ opacity: [0, 1, 0] }}
+        transition={{ duration: 0.85, repeat: Infinity }}
+        className={`ml-1 inline-block h-6 w-0.5 ${isDark ? "bg-cyan-400" : "bg-amber-500"}`}
+      />
+    </span>
+  );
+};
+
 const Companion = ({ mousePos, isJumping, isDark }) => {
   const [jokeIdx, setJokeIdx] = useState(0);
 
@@ -272,7 +167,7 @@ const Companion = ({ mousePos, isJumping, isDark }) => {
   const eyeY = ((mousePos.y / window.innerHeight) - 0.5) * 10;
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end pointer-events-none">
+    <div className="fixed bottom-6 right-6 z-50 hidden md:flex flex-col items-end pointer-events-none">
       <AnimatePresence mode="wait">
         <motion.div
           key={jokeIdx}
@@ -334,7 +229,6 @@ export default function App() {
     return localStorage.getItem('portfolio-theme') || 'dark';
   });
   const [copiedPhone, setCopiedPhone] = useState(false);
-  const [copiedEmail, setCopiedEmail] = useState(false);
   const [filter, setFilter] = useState("All");
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isJumping, setIsJumping] = useState(false);
@@ -342,6 +236,8 @@ export default function App() {
   const [formStatus, setFormStatus] = useState({ loading: false, success: false, error: false });
   const scrollRef = useRef(null);
   const { scrollYProgress } = useScroll();
+  const smoothScrollProgress = useSpring(scrollYProgress, { stiffness: 120, damping: 28, mass: 0.2 });
+  const pageGlowY = useTransform(smoothScrollProgress, [0, 1], ["0%", "75%"]);
   const isDark = theme === 'dark';
 
   useEffect(() => {
@@ -365,7 +261,6 @@ export default function App() {
     navigator.clipboard.writeText(text);
     playPopSound();
     if (type === 'phone') { setCopiedPhone(true); setTimeout(() => setCopiedPhone(false), 2000); }
-    if (type === 'email') { setCopiedEmail(true); setTimeout(() => setCopiedEmail(false), 2000); }
   };
 
   const handleSubmit = async (e) => {
@@ -433,13 +328,22 @@ export default function App() {
   };
 
   return (
-    <div className={`min-h-screen ${themeClasses.page} selection:text-black font-sans relative overflow-x-hidden antialiased transition-colors duration-700`} ref={scrollRef}>
+    <div className={`min-h-screen ${themeClasses.page} selection:text-black font-sans relative isolate overflow-x-hidden antialiased transition-colors duration-700`} ref={scrollRef}>
       <motion.div
-        style={{ scaleX: scrollYProgress }}
+        style={{ scaleX: smoothScrollProgress }}
         className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-cyan-500 via-purple-600 to-pink-600 origin-left z-50 transition-colors duration-700"
       />
 
-      <AnimatedBackground isDark={isDark} />
+      <Background3D isDark={isDark} />
+
+      <motion.div
+        aria-hidden="true"
+        style={{
+          y: pageGlowY,
+          background: `radial-gradient(circle at ${mousePos.x || 50}px ${mousePos.y || 50}px, ${isDark ? "rgba(34,211,238,0.18)" : "rgba(245,158,11,0.18)"}, transparent 28rem)`,
+        }}
+        className="fixed inset-0 z-[1] pointer-events-none mix-blend-screen"
+      />
 
       <div className="fixed top-6 left-0 right-0 z-40 flex justify-center px-6 pointer-events-none">
         <motion.nav 
@@ -492,111 +396,331 @@ export default function App() {
         </motion.nav>
       </div>
 
-      <section id="hero" className="min-h-screen flex items-center justify-center pt-32 pb-24 px-6 relative">
-        <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
-          <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 0.6 }} className="lg:col-span-5 flex justify-center lg:justify-start">
+      <section id="hero" className="min-h-screen flex items-center justify-center pt-24 sm:pt-28 pb-16 px-6 relative z-10 overflow-hidden">
+        <motion.div
+          aria-hidden="true"
+          animate={{ opacity: [0.22, 0.5, 0.22], scale: [1, 1.06, 1] }}
+          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+          className={`absolute left-1/2 top-28 h-64 w-64 -translate-x-1/2 rounded-full blur-3xl ${isDark ? "bg-cyan-500/20" : "bg-amber-300/30"}`}
+        />
+        <div className="absolute inset-0 hidden lg:block pointer-events-none">
+          {heroCodeSnippets.map((snippet, index) => (
             <motion.div
+              key={snippet}
+              initial={{ opacity: 0, y: 20, rotate: index % 2 ? 5 : -5 }}
               animate={{
-                y: [0, -20, 0],
-                rotate: [0, 2, -2, 0],
+                opacity: [0.18, 0.52, 0.18],
+                y: [0, index % 2 ? -18 : 18, 0],
+                rotate: [index % 2 ? 5 : -5, index % 2 ? -3 : 3, index % 2 ? 5 : -5],
               }}
-              transition={{ duration: 6, repeat: Infinity }}
-              className={`relative w-72 h-72 sm:w-96 sm:h-96 rounded-full p-1.5 bg-gradient-to-tr ${isDark ? "from-cyan-500 via-indigo-500 to-emerald-400 shadow-cyan-500/20" : "from-amber-400 via-orange-400 to-sky-400 shadow-amber-500/25"} shadow-2xl group transition-colors duration-700`}
+              transition={{ duration: 7 + index, repeat: Infinity, delay: index * 0.5, ease: "easeInOut" }}
+              className={`absolute rounded-xl border px-3 py-2 font-mono text-xs backdrop-blur-md ${themeClasses.chip}`}
+              style={{
+                left: `${12 + index * 21}%`,
+                top: `${24 + (index % 2) * 50}%`,
+              }}
             >
-              <div className={`w-full h-full rounded-full overflow-hidden ${themeClasses.card} border-4 ${isDark ? "border-[#030712]" : "border-white"} flex items-center justify-center relative transition-colors duration-700`}>
-                <img src="https://scontent.fbir1-1.fna.fbcdn.net/v/t1.15752-9/728195566_1358907119641663_6883743813025796832_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=103&ccb=1-7&_nc_sid=9f807c&_nc_ohc=2RKbk0fwNEkQ7kNvwHhRvLm&_nc_oc=AdrsQN6tu05hadE_dveOMV5yII8XFp8C2S6VqzQzCmCzQ9xRDDY_prSYXa5VTAeVxsE&_nc_ad=z-m&_nc_cid=5011&_nc_zt=23&_nc_ht=scontent.fbir1-1.fna&_nc_ss=7a22e&oh=03_Q7cD5gHvhqDCwdrOe6y_7DUk9qDNIZQHhHKlB_JHIMNDOjDkcQ&oe=6A62C2C6" alt="Sagal Rai" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent" />
+              {snippet}
+            </motion.div>
+          ))}
+        </div>
+
+        <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+          <motion.div
+            initial={{ scale: 0.92, opacity: 0, x: -30 }}
+            animate={{ scale: 1, opacity: 1, x: 0 }}
+            transition={{ duration: 0.7, type: "spring", stiffness: 90 }}
+            className="lg:col-span-5 flex justify-center lg:justify-start"
+          >
+            <div className="relative w-full max-w-[28rem] min-h-[31rem] sm:min-h-[34rem] flex items-center justify-center">
+              <motion.div
+                aria-hidden="true"
+                animate={{ rotate: 360 }}
+                transition={{ duration: 28, repeat: Infinity, ease: "linear" }}
+                className={`absolute h-[25rem] w-[25rem] rounded-full border border-dashed ${isDark ? "border-cyan-400/20" : "border-amber-400/30"}`}
+              />
+
+              {orbitBadges.map((badge) => (
+                <motion.div
+                  key={badge.label}
+                  initial={{ opacity: 0, scale: 0.6 }}
+                  animate={{ opacity: 1, scale: 1, y: [0, -8, 0] }}
+                  transition={{ opacity: { delay: 0.7 + badge.delay }, scale: { delay: 0.7 + badge.delay }, y: { duration: 3.8, repeat: Infinity, delay: badge.delay } }}
+                  className={`absolute ${badge.className} hidden sm:flex items-center gap-2 rounded-full border px-3 py-2 text-xs font-mono font-bold backdrop-blur-md ${themeClasses.chip}`}
+                >
+                  <span className={`h-2 w-2 rounded-full ${isDark ? "bg-cyan-400" : "bg-amber-500"}`} />
+                  {badge.label}
+                </motion.div>
+              ))}
+
+              <motion.div
+                animate={{ y: [0, -16, 0], rotate: [0, 1.5, -1.5, 0] }}
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                className={`relative w-72 h-72 sm:w-96 sm:h-96 rounded-full p-1.5 bg-gradient-to-tr ${isDark ? "from-cyan-500 via-indigo-500 to-emerald-400 shadow-cyan-500/20" : "from-amber-400 via-orange-400 to-sky-400 shadow-amber-500/25"} shadow-2xl group transition-colors duration-700`}
+              >
+                <motion.div
+                  animate={{ opacity: [0.35, 0.9, 0.35] }}
+                  transition={{ duration: 2.4, repeat: Infinity }}
+                  className={`absolute -inset-5 rounded-full blur-2xl ${isDark ? "bg-cyan-500/15" : "bg-amber-300/25"}`}
+                />
+                <div className={`relative w-full h-full rounded-full overflow-hidden ${themeClasses.card} border-4 ${isDark ? "border-[#030712]" : "border-white"} flex items-center justify-center transition-colors duration-700`}>
+                  <img src="https://scontent.fbir1-1.fna.fbcdn.net/v/t1.15752-9/728195566_1358907119641663_6883743813025796832_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=103&ccb=1-7&_nc_sid=9f807c&_nc_ohc=2RKbk0fwNEkQ7kNvwHhRvLm&_nc_oc=AdrsQN6tu05hadE_dveOMV5yII8XFp8C2S6VqzQzCmCzQ9xRDDY_prSYXa5VTAeVxsE&_nc_ad=z-m&_nc_cid=5011&_nc_zt=23&_nc_ht=scontent.fbir1-1.fna&_nc_ss=7a22e&oh=03_Q7cD5gHvhqDCwdrOe6y_7DUk9qDNIZQHhHKlB_JHIMNDOjDkcQ&oe=6A62C2C6" alt="Sagal Rai" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <motion.div
+                    aria-hidden="true"
+                    animate={{ y: ["-120%", "120%"] }}
+                    transition={{ duration: 3.8, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute inset-x-0 h-24 bg-gradient-to-b from-transparent via-white/18 to-transparent"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/65 via-transparent to-transparent" />
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8 }}
+                className={`absolute bottom-0 left-1/2 w-[min(24rem,92vw)] -translate-x-1/2 rounded-2xl border p-4 backdrop-blur-xl ${themeClasses.cardStrong}`}
+              >
+                <div className="flex items-center justify-between gap-4">
+                  <div>
+                    <p className={`text-[10px] font-mono uppercase tracking-widest ${themeClasses.faint}`}>Current mode</p>
+                    <p className={`mt-1 text-sm font-black ${themeClasses.heading}`}>Building production-ready systems</p>
+                  </div>
+                  <motion.div
+                    animate={{ scale: [1, 1.16, 1] }}
+                    transition={{ duration: 1.4, repeat: Infinity }}
+                    className="h-3 w-3 rounded-full bg-emerald-400 shadow-lg shadow-emerald-400/40"
+                  />
+                </div>
+              </motion.div>
+            </div>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="lg:col-span-7 text-center lg:text-left">
+            <div className="mx-auto lg:mx-0 max-w-3xl space-y-6">
+              <motion.div
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className={`inline-flex items-center gap-2 px-4 py-2 rounded-full ${themeClasses.chip} border text-xs font-mono tracking-widest uppercase shadow-inner transition-colors duration-700`}
+              >
+                <Lock className="w-3.5 h-3.5 text-emerald-400" />
+                <span>Hardened Code & Flawless UX</span>
+              </motion.div>
+
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className={`text-5xl sm:text-7xl lg:text-8xl font-extrabold tracking-tight ${themeClasses.heading} leading-[1.02] transition-colors duration-700`}
+              >
+                Full Stack <br />
+                <motion.span
+                  animate={{ backgroundPosition: ['0%', '100%', '0%'] }}
+                  transition={{ duration: 4, repeat: Infinity }}
+                  style={{
+                    backgroundImage: isDark 
+                      ? 'linear-gradient(90deg, #06b6d4, #14b8a6, #10b981, #06b6d4)' 
+                      : 'linear-gradient(90deg, #f59e0b, #ff8c42, #ff6b9d, #f59e0b)',
+                    backgroundSize: '200% 100%',
+                  }}
+                  className="bg-clip-text text-transparent"
+                >
+                  Web Developer.
+                </motion.span>
+              </motion.h1>
+
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                className={`max-w-2xl text-lg sm:text-xl ${themeClasses.body} font-normal leading-relaxed transition-colors duration-700`}
+              >
+                I architect high-fidelity digital infrastructure. Combining over 2 years of full-stack engineering with raw bare-metal hardware control and rigorous offensive penetration testing methodologies.
+              </motion.p>
+
+              <motion.div
+                initial={{ opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.48 }}
+                className="grid grid-cols-1 sm:grid-cols-3 gap-3"
+              >
+                {heroStats.map((stat, index) => (
+                  <motion.div
+                    key={stat.label}
+                    whileHover={{ y: -5, scale: 1.02 }}
+                    animate={{ y: [0, index % 2 ? 6 : -6, 0] }}
+                    transition={{ y: { duration: 5 + index, repeat: Infinity, ease: "easeInOut" } }}
+                    className={`rounded-2xl border p-4 ${themeClasses.cardStrong}`}
+                  >
+                    <p className={`text-3xl font-black ${index === 1 ? "text-emerald-400" : themeClasses.accent}`}>{stat.value}</p>
+                    <p className={`mt-1 text-xs font-mono uppercase tracking-widest ${themeClasses.heading}`}>{stat.label}</p>
+                    <p className={`mt-1 text-xs ${themeClasses.muted}`}>{stat.detail}</p>
+                  </motion.div>
+                ))}
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.56 }}
+                className="flex flex-wrap gap-4 justify-center lg:justify-start pt-1"
+              >
+                <motion.a 
+                  href="#contact" 
+                  onClick={(e) => { e.preventDefault(); scrollToSection('contact'); playPopSound(); }} 
+                  whileHover={{ scale: 1.05, y: -3 }}
+                  whileTap={{ scale: 0.95 }}
+                  className={`px-7 sm:px-8 py-4 rounded-2xl bg-gradient-to-r ${themeClasses.primaryButton} font-extrabold text-sm tracking-wide transition-all shadow-xl flex items-center gap-2 cursor-pointer`}
+                >
+                  <span>Secure Your Project</span><ArrowRight className="w-4 h-4" />
+                </motion.a>
+                <motion.a 
+                  href="#services" 
+                  onClick={(e) => { e.preventDefault(); scrollToSection('services'); playPopSound(); }} 
+                  whileHover={{ scale: 1.05, y: -3 }}
+                  whileTap={{ scale: 0.95 }}
+                  className={`px-7 sm:px-8 py-4 rounded-2xl ${themeClasses.secondaryButton} border font-bold text-sm tracking-wide transition-all flex items-center gap-2 cursor-pointer`}
+                >
+                  <span>View Capabilities</span>
+                </motion.a>
+              </motion.div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 28 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7 }}
+            className="lg:col-span-12 grid grid-cols-1 lg:grid-cols-12 gap-4"
+          >
+            <div className={`lg:col-span-8 overflow-hidden rounded-2xl border ${themeClasses.cardStrong}`}>
+              <motion.div
+                animate={{ x: ["0%", "-50%"] }}
+                transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
+                className="flex w-max gap-3 px-4 py-4"
+              >
+                {[...heroSignals, ...heroSignals].map((signal, index) => (
+                  <div key={`${signal.label}-${index}`} className={`flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold ${themeClasses.chip}`}>
+                    {signal.icon}
+                    <span>{signal.label}</span>
+                  </div>
+                ))}
+              </motion.div>
+            </div>
+            <motion.div
+              animate={{ opacity: [0.82, 1, 0.82] }}
+              transition={{ duration: 2.6, repeat: Infinity }}
+              className={`lg:col-span-4 rounded-2xl border p-4 font-mono text-xs ${themeClasses.cardStrong}`}
+            >
+              <div className="flex items-center gap-2">
+                <Terminal className={`w-4 h-4 ${themeClasses.accent}`} />
+                <span className={themeClasses.faint}>deploy_status</span>
+                <span className="ml-auto text-emerald-400">online</span>
+              </div>
+              <div className={`mt-3 h-2 overflow-hidden rounded-full ${isDark ? "bg-slate-800" : "bg-sky-100"}`}>
+                <motion.div
+                  animate={{ x: ["-100%", "100%"] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                  className={`h-full w-1/2 rounded-full bg-gradient-to-r ${isDark ? "from-cyan-500 to-emerald-400" : "from-amber-400 to-sky-400"}`}
+                />
               </div>
             </motion.div>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="lg:col-span-7 space-y-6 text-center lg:text-left">
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className={`inline-flex items-center gap-2 px-4 py-2 rounded-full ${themeClasses.chip} border text-xs font-mono tracking-widest uppercase shadow-inner transition-colors duration-700`}
-            >
-              <Lock className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Hardened Code & Flawless UX</span>
-            </motion.div>
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className={`text-5xl sm:text-7xl font-extrabold tracking-tight ${themeClasses.heading} leading-[1.08] transition-colors duration-700`}
-            >
-              Full Stack <br />
-              <motion.span
-                animate={{ backgroundPosition: ['0%', '100%', '0%'] }}
-                transition={{ duration: 4, repeat: Infinity }}
-                style={{
-                  backgroundImage: isDark 
-                    ? 'linear-gradient(90deg, #06b6d4, #14b8a6, #10b981, #06b6d4)' 
-                    : 'linear-gradient(90deg, #f59e0b, #ff8c42, #ff6b9d, #f59e0b)',
-                  backgroundSize: '200% 100%',
-                }}
-                className="bg-clip-text text-transparent"
-              >
-                Web Developer.
-              </motion.span>
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              className={`max-w-xl text-lg ${themeClasses.body} font-normal leading-relaxed transition-colors duration-700`}
-            >
-              I architect high-fidelity digital infrastructure. Combining over 2 years of full-stack engineering with raw bare-metal hardware control and rigorous offensive penetration testing methodologies.
-            </motion.p>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
-              className="flex flex-wrap gap-4 justify-center lg:justify-start pt-2"
-            >
-              <motion.a 
-                href="#contact" 
-                onClick={(e) => { e.preventDefault(); scrollToSection('contact'); playPopSound(); }} 
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className={`px-8 py-4 rounded-2xl bg-gradient-to-r ${themeClasses.primaryButton} font-extrabold text-sm tracking-wide transition-all shadow-xl flex items-center gap-2 cursor-pointer`}
-              >
-                <span>Secure Your Project</span><ArrowRight className="w-4 h-4" />
-              </motion.a>
-              <motion.a 
-                href="#services" 
-                onClick={(e) => { e.preventDefault(); scrollToSection('services'); playPopSound(); }} 
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className={`px-8 py-4 rounded-2xl ${themeClasses.secondaryButton} border font-bold text-sm tracking-wide transition-all flex items-center gap-2 cursor-pointer`}
-              >
-                <span>View Capabilities</span>
-              </motion.a>
-            </motion.div>
+            <div className={`lg:col-span-12 rounded-2xl border p-3 sm:p-4 ${themeClasses.cardStrong}`}>
+              <div className="grid grid-cols-5 gap-2">
+                {processSteps.map((step, index) => (
+                  <motion.div
+                    key={step}
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.85 + index * 0.08 }}
+                    className="relative flex flex-col items-center gap-2 text-center"
+                  >
+                    <motion.div
+                      animate={{ scale: [1, 1.22, 1], boxShadow: isDark ? ["0 0 0 rgba(34,211,238,0)", "0 0 28px rgba(34,211,238,0.35)", "0 0 0 rgba(34,211,238,0)"] : ["0 0 0 rgba(245,158,11,0)", "0 0 28px rgba(245,158,11,0.35)", "0 0 0 rgba(245,158,11,0)"] }}
+                      transition={{ duration: 2.2, repeat: Infinity, delay: index * 0.28 }}
+                      className={`h-3 w-3 rounded-full ${isDark ? "bg-cyan-400" : "bg-amber-500"}`}
+                    />
+                    <span className={`text-[10px] sm:text-xs font-mono uppercase tracking-widest ${themeClasses.muted}`}>{step}</span>
+                    {index < processSteps.length - 1 && (
+                      <span className={`absolute left-1/2 top-1.5 h-px w-full ${isDark ? "bg-cyan-400/20" : "bg-amber-400/30"}`} />
+                    )}
+                  </motion.div>
+                ))}
+              </div>
+            </div>
           </motion.div>
         </div>
       </section>
 
       
-      <section id="about" className={`py-36 px-6 border-t ${themeClasses.border} ${themeClasses.sectionAlt} relative transition-colors duration-700`}>
+      <section id="about" className={`py-36 px-6 border-t ${themeClasses.border} ${themeClasses.sectionAlt} relative z-10 transition-colors duration-700`}>
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
           <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="lg:col-span-7 space-y-6">
-            <span className={`text-xs font-mono ${themeClasses.accent} uppercase tracking-widest flex items-center gap-2 transition-colors duration-700`}><Shield className="w-4 h-4" /><span>UNCOMPROMISING ARCHITECTURE</span></span>
-            <h2 className={`text-3xl sm:text-5xl font-extrabold tracking-tight ${themeClasses.heading} leading-tight transition-colors duration-700`}>Building software through the rigorous lens of a security auditor.</h2>
+            <motion.span
+              whileInView={{ x: [0, 8, 0] }}
+              transition={{ duration: 1.2 }}
+              className={`text-xs font-mono ${themeClasses.accent} uppercase tracking-widest flex items-center gap-2 transition-colors duration-700`}
+            >
+              <Shield className="w-4 h-4" /><span>UNCOMPROMISING ARCHITECTURE</span>
+            </motion.span>
+            <motion.h2
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className={`text-3xl sm:text-5xl font-extrabold tracking-tight ${themeClasses.heading} leading-tight transition-colors duration-700`}
+            >
+              Building software through the rigorous lens of a security auditor.
+            </motion.h2>
             <div className={`space-y-4 ${themeClasses.body} leading-relaxed font-normal text-base sm:text-lg transition-colors duration-700`}>
               <p>Most developers construct applications solely for the "happy path," leaving gaping structural vulnerabilities beneath pretty interfaces. As an offensive security specialist and Full Stack Developer, I anticipate edge cases, injection vectors, and logic flaws before writing a single line of production code.</p>
               <p>My technical reach spans from buttery-smooth React interfaces down to low-level hardware instructions. Because I program bare-metal microcontrollers and build custom Arduino circuitry, I possess an unshakeable grasp of how high-level web code interacts with physical memory and server processors.</p>
             </div>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+              {["Threats", "Latency", "UX", "Scale"].map((item, index) => (
+                <motion.div
+                  key={item}
+                  initial={{ opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.08 }}
+                  whileHover={{ y: -4 }}
+                  className={`rounded-xl border p-3 text-center text-xs font-mono uppercase tracking-widest ${themeClasses.card}`}
+                >
+                  {item}
+                </motion.div>
+              ))}
+            </div>
           </motion.div>
           <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} className="lg:col-span-5 flex justify-center">
-            <div className={`relative w-full max-w-md aspect-square rounded-3xl overflow-hidden border-2 ${themeClasses.card} shadow-2xl transition-colors duration-700`}>
+            <motion.div
+              whileHover={{ scale: 1.03, rotate: 1 }}
+              className={`relative w-full max-w-md aspect-square rounded-3xl overflow-hidden border-2 ${themeClasses.card} shadow-2xl transition-colors duration-700`}
+            >
               <img src="https://scontent.fbir1-1.fna.fbcdn.net/v/t1.15752-9/730373184_1323060453264145_9085179104798166664_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=fc17b8&_nc_ohc=2ZbxzTnJHo8Q7kNvwHCkBDn&_nc_oc=Adq4vaOnrOwOKHb-Se2y6WYkjal4HkumqR6aPQa-BrJl1RPA-iCiIKfyNKcycG2dF3A&_nc_ad=z-m&_nc_cid=5011&_nc_zt=23&_nc_ht=scontent.fbir1-1.fna&_nc_ss=7a22e&oh=03_Q7cD5gGRghnTrjXZZLaR2We2YD2Nhu0aQq0rBBtNXu_a7rKKUA&oe=6A62F87C" alt="Sagal Rai Workspace" className="w-full h-full object-cover" />
-            </div>
+              <motion.div
+                aria-hidden="true"
+                animate={{ y: ["-110%", "110%"] }}
+                transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute inset-x-0 h-28 bg-gradient-to-b from-transparent via-white/16 to-transparent"
+              />
+              <div className={`absolute bottom-4 left-4 right-4 rounded-2xl border p-4 backdrop-blur-xl ${themeClasses.cardStrong}`}>
+                <div className="flex items-center justify-between">
+                  <span className={`text-xs font-mono uppercase tracking-widest ${themeClasses.faint}`}>workspace</span>
+                  <motion.span
+                    animate={{ opacity: [0.35, 1, 0.35] }}
+                    transition={{ duration: 1.5, repeat: Infinity }}
+                    className="h-2.5 w-2.5 rounded-full bg-emerald-400"
+                  />
+                </div>
+              </div>
+            </motion.div>
           </motion.div>
         </div>
       </section>
 
-      <section id="services" className={`py-36 px-6 border-t ${themeClasses.border} relative transition-colors duration-700`}>
+      <section id="services" className={`py-36 px-6 border-t ${themeClasses.border} relative z-10 transition-colors duration-700`}>
         <div className="max-w-7xl mx-auto">
           <div className="text-center max-w-3xl mx-auto mb-20 space-y-4">
             <span className={`text-xs font-mono ${themeClasses.accent} uppercase tracking-widest transition-colors duration-700 block`}>WHAT I ENGINEER</span>
@@ -610,15 +734,41 @@ export default function App() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1 }}
-                className={`${themeClasses.cardStrong} border ${srv.border} rounded-3xl p-8 flex flex-col justify-between shadow-xl transition-all duration-300 relative overflow-hidden`}
+                whileHover={{ y: -10, rotateX: 2, rotateY: idx % 2 ? -2 : 2 }}
+                className={`${themeClasses.cardStrong} border ${srv.border} rounded-3xl p-8 flex flex-col justify-between shadow-xl transition-all duration-300 relative overflow-hidden group`}
               >
+                <motion.div
+                  aria-hidden="true"
+                  animate={{ x: ["-120%", "130%"] }}
+                  transition={{ duration: 4, repeat: Infinity, delay: idx * 0.35, ease: "easeInOut" }}
+                  className={`absolute top-0 h-px w-2/3 bg-gradient-to-r from-transparent ${isDark ? "via-cyan-400/70" : "via-amber-400/80"} to-transparent`}
+                />
+                <motion.div
+                  aria-hidden="true"
+                  initial={{ opacity: 0, scale: 0.7 }}
+                  whileHover={{ opacity: 1, scale: 1 }}
+                  className={`absolute -right-16 -top-16 h-44 w-44 rounded-full blur-3xl ${isDark ? "bg-cyan-500/20" : "bg-amber-300/30"}`}
+                />
                 <div className="relative z-10">
                   <div className="flex items-center justify-between mb-8">
-                    <div className={`p-4 rounded-2xl ${themeClasses.iconBox} border`}>{srv.icon}</div>
+                    <motion.div
+                      whileHover={{ rotate: [0, -8, 8, 0], scale: 1.12 }}
+                      transition={{ duration: 0.5 }}
+                      className={`p-4 rounded-2xl ${themeClasses.iconBox} border`}
+                    >
+                      {srv.icon}
+                    </motion.div>
                     <span className={`text-[11px] font-mono px-3.5 py-1 rounded-full ${themeClasses.chip} border transition-colors duration-700`}>{srv.tag}</span>
                   </div>
                   <h3 className={`text-2xl font-extrabold ${themeClasses.heading} mb-3`}>{srv.title}</h3>
                   <p className={`${themeClasses.muted} text-sm leading-relaxed font-normal`}>{srv.desc}</p>
+                  <motion.div
+                    initial={{ width: 0 }}
+                    whileInView={{ width: "100%" }}
+                    viewport={{ once: true }}
+                    transition={{ delay: idx * 0.12 + 0.2, duration: 0.8 }}
+                    className={`mt-6 h-px bg-gradient-to-r ${isDark ? "from-cyan-400/0 via-cyan-400/60 to-transparent" : "from-amber-400/0 via-amber-400/70 to-transparent"}`}
+                  />
                 </div>
               </motion.div>
             ))}
@@ -626,7 +776,7 @@ export default function App() {
         </div>
       </section>
 
-      <section id="skills" className={`py-36 px-6 border-t ${themeClasses.border} ${themeClasses.sectionAlt} relative transition-colors duration-700`}>
+      <section id="skills" className={`py-36 px-6 border-t ${themeClasses.border} ${themeClasses.sectionAlt} relative z-10 transition-colors duration-700`}>
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
             <div className="space-y-3">
@@ -638,6 +788,8 @@ export default function App() {
                 <motion.button
                   key={cat}
                   onClick={() => { setFilter(cat); playPopSound(); }}
+                  whileHover={{ y: -2 }}
+                  whileTap={{ scale: 0.95 }}
                   className={`px-5 py-2.5 rounded-xl text-xs font-mono transition-all ${filter === cat ? `${isDark ? "bg-cyan-500" : "bg-amber-400"} text-slate-950 font-extrabold shadow-lg` : `${themeClasses.muted}`}`}
                 >
                   {cat}
@@ -654,9 +806,22 @@ export default function App() {
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
-                  className={`${themeClasses.card} border rounded-2xl p-6 flex flex-col items-center justify-center text-center shadow-lg`}
+                  whileHover={{ y: -8, scale: 1.04 }}
+                  className={`${themeClasses.card} border rounded-2xl p-6 flex flex-col items-center justify-center text-center shadow-lg relative overflow-hidden group`}
                 >
-                  <div className={`p-4 rounded-xl ${themeClasses.iconBox} border mb-4`}>{tech.icon}</div>
+                  <motion.div
+                    aria-hidden="true"
+                    initial={{ opacity: 0 }}
+                    whileHover={{ opacity: 1 }}
+                    className={`absolute inset-0 ${isDark ? "bg-cyan-500/5" : "bg-amber-300/15"}`}
+                  />
+                  <motion.div
+                    animate={{ rotate: [0, 2, -2, 0] }}
+                    transition={{ duration: 3.8, repeat: Infinity, ease: "easeInOut" }}
+                    className={`relative p-4 rounded-xl ${themeClasses.iconBox} border mb-4 group-hover:shadow-lg ${isDark ? "group-hover:shadow-cyan-500/20" : "group-hover:shadow-amber-400/25"}`}
+                  >
+                    {tech.icon}
+                  </motion.div>
                   <span className={`font-extrabold text-sm ${themeClasses.body}`}>{tech.name}</span>
                 </motion.div>
               ))}
@@ -665,34 +830,74 @@ export default function App() {
         </div>
       </section>
 
-      <section id="contact" className={`py-36 px-6 border-t ${themeClasses.border} relative`}>
+      <section id="contact" className={`py-36 px-6 border-t ${themeClasses.border} relative z-10`}>
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
           <div className="lg:col-span-6 space-y-8">
             <div className="space-y-3">
               <span className={`text-xs font-mono ${themeClasses.accent} uppercase tracking-widest`}>SECURE TRANSMISSION</span>
               <h2 className={`text-4xl sm:text-6xl font-black ${themeClasses.heading}`}>Initiate a Secure Dialogue.</h2>
             </div>
-            <div className={`p-8 rounded-3xl ${themeClasses.cardStrong} border ${themeClasses.body} text-base shadow-xl`}>
+            <motion.div
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              whileHover={{ y: -6 }}
+              className={`p-8 rounded-3xl ${themeClasses.cardStrong} border ${themeClasses.body} text-base shadow-xl relative overflow-hidden`}
+            >
+              <motion.div
+                aria-hidden="true"
+                animate={{ x: ["-120%", "130%"] }}
+                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                className={`absolute top-0 h-px w-3/4 bg-gradient-to-r from-transparent ${isDark ? "via-cyan-400/70" : "via-amber-400/80"} to-transparent`}
+              />
               "I manage client deliverables with strict personal accountability. I guarantee prompt communications, transparent development cycles, and robust software architectures."
-            </div>
+            </motion.div>
             <div className="space-y-4 pt-2 font-mono">
-              <div onClick={() => copyToClipboard('+9779705974665', 'phone')} className={`flex items-center justify-between p-5 rounded-2xl ${themeClasses.card} border cursor-pointer`}>
+              <motion.div
+                onClick={() => copyToClipboard('+9779705974665', 'phone')}
+                whileHover={{ x: 8, scale: 1.01 }}
+                whileTap={{ scale: 0.98 }}
+                className={`flex items-center justify-between p-5 rounded-2xl ${themeClasses.card} border cursor-pointer`}
+              >
                 <div className="flex items-center gap-4">
-                  <div className={`p-3 rounded-xl ${themeClasses.accentSoft}`}><Phone className="w-5 h-5" /></div>
+                  <motion.div
+                    animate={{ rotate: copiedPhone ? [0, -12, 12, 0] : 0 }}
+                    className={`p-3 rounded-xl ${themeClasses.accentSoft}`}
+                  >
+                    <Phone className="w-5 h-5" />
+                  </motion.div>
                   <div><p className={`text-xs ${themeClasses.faint} font-bold`}>DIRECT LINE</p><p className={`text-sm font-extrabold ${themeClasses.heading}`}>+977 9705974665</p></div>
                 </div>
                 {copiedPhone ? <Check className="w-5 h-5 text-emerald-400" /> : <Copy className={`w-4 h-4 ${themeClasses.faint}`} />}
-              </div>
+              </motion.div>
             </div>
           </div>
-          <motion.div className={`lg:col-span-6 ${themeClasses.cardStrong} border-2 rounded-3xl p-10 shadow-2xl`}>
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            whileHover={{ y: -6 }}
+            className={`lg:col-span-6 ${themeClasses.cardStrong} border-2 rounded-3xl p-10 shadow-2xl relative overflow-hidden`}
+          >
+            <motion.div
+              aria-hidden="true"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 16, repeat: Infinity, ease: "linear" }}
+              className={`absolute -right-20 -top-20 h-44 w-44 rounded-full border ${isDark ? "border-cyan-400/15" : "border-amber-400/25"}`}
+            />
             <form onSubmit={handleSubmit} className="space-y-6">
-              <input type="text" required value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} placeholder="Name" className={`w-full ${themeClasses.input} border rounded-xl px-5 py-4 text-sm`} />
-              <input type="email" required value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} placeholder="Email" className={`w-full ${themeClasses.input} border rounded-xl px-5 py-4 text-sm`} />
-              <textarea rows={5} required value={formData.scope} onChange={(e) => setFormData({...formData, scope: e.target.value})} placeholder="Project Details" className={`w-full ${themeClasses.input} border rounded-xl px-5 py-4 text-sm resize-none`} />
-              <button type="submit" disabled={formStatus.loading} className={`w-full py-4 rounded-xl bg-gradient-to-r ${themeClasses.primaryButton} font-black text-xs uppercase`}>
+              <motion.input whileFocus={{ scale: 1.01 }} type="text" required value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} placeholder="Name" className={`w-full ${themeClasses.input} border rounded-xl px-5 py-4 text-sm relative z-10`} />
+              <motion.input whileFocus={{ scale: 1.01 }} type="email" required value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} placeholder="Email" className={`w-full ${themeClasses.input} border rounded-xl px-5 py-4 text-sm relative z-10`} />
+              <motion.textarea whileFocus={{ scale: 1.01 }} rows={5} required value={formData.scope} onChange={(e) => setFormData({...formData, scope: e.target.value})} placeholder="Project Details" className={`w-full ${themeClasses.input} border rounded-xl px-5 py-4 text-sm resize-none relative z-10`} />
+              <motion.button
+                type="submit"
+                disabled={formStatus.loading}
+                whileHover={{ scale: 1.02, y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                className={`w-full py-4 rounded-xl bg-gradient-to-r ${themeClasses.primaryButton} font-black text-xs uppercase relative z-10`}
+              >
                 {formStatus.loading ? "Transmitting..." : "Transmit"}
-              </button>
+              </motion.button>
             </form>
           </motion.div>
         </div>
