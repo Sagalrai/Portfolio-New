@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useSpring, useTransform } from 'framer-motion';
 import Background3D from "./components/Background3D";
-import { 
-  Shield, Server, Code2, Database, Cpu, 
-  ShoppingCart, GraduationCap, Utensils, CalendarCheck, Briefcase, 
+import {
+  Shield, Server, Code2, Database, Cpu,
+  ShoppingCart, GraduationCap, Utensils, CalendarCheck, Briefcase,
   Phone, Copy, Check, Terminal, Layers, Globe, Zap, Sparkles, ArrowRight, Lock,
   Moon, Sun
 } from 'lucide-react';
@@ -30,7 +30,7 @@ const playPopSound = () => {
     gain.connect(ctx.destination);
     osc.start();
     osc.stop(ctx.currentTime + 0.1);
-  } catch {}
+  } catch { }
 };
 
 const jokes = [
@@ -60,12 +60,12 @@ const techStack = [
 ];
 
 const servicesOffered = [
-  { title: "E-Commerce Architectures", desc: "High-conversion digital storefronts built with lightning-fast product querying, secure payment gateways, and automated inventory management.", icon: <ShoppingCart className="w-6 h-6 text-cyan-400"/>, tag: "Retail & Sales", border: "hover:border-cyan-500/50" },
-  { title: "Campus & LMS Portals", desc: "Comprehensive institutional software featuring real-time grading ledgers, secure fee processing, notice distribution, and faculty management dashboards.", icon: <GraduationCap className="w-6 h-6 text-purple-400"/>, tag: "Education", border: "hover:border-purple-500/50" },
-  { title: "Hospitality & POS Engines", desc: "Dynamic interactive menus, table reservation engines, and instantaneous kitchen order routing built for zero-latency restaurant operations.", icon: <Utensils className="w-6 h-6 text-emerald-400"/>, tag: "Hospitality", border: "hover:border-emerald-500/50" },
-  { title: "Automated Booking Systems", desc: "Flawless appointment scheduling infrastructure equipped with multi-timezone synchronization, SMS reminders, and calendar integrations.", icon: <CalendarCheck className="w-6 h-6 text-amber-400"/>, tag: "Service Industry", border: "hover:border-amber-500/50" },
-  { title: "Executive Web Footprints", desc: "Premium, ultra-fast minimalist web portfolios designed to establish undisputed market authority for elite corporate agencies and public figures.", icon: <Briefcase className="w-6 h-6 text-rose-400"/>, tag: "Enterprise", border: "hover:border-rose-500/50" },
-  { title: "Application Hardening", desc: "Subjecting codebase architectures to rigorous offensive security auditing to neutralize SQL injection, cross-site scripting, and unauthorized API scraping.", icon: <Shield className="w-6 h-6 text-indigo-400"/>, tag: "Cybersecurity", border: "hover:border-indigo-500/50" },
+  { title: "E-Commerce Architectures", desc: "High-conversion digital storefronts built with lightning-fast product querying, secure payment gateways, and automated inventory management.", icon: <ShoppingCart className="w-6 h-6 text-cyan-400" />, tag: "Retail & Sales", border: "hover:border-cyan-500/50" },
+  { title: "Campus & LMS Portals", desc: "Comprehensive institutional software featuring real-time grading ledgers, secure fee processing, notice distribution, and faculty management dashboards.", icon: <GraduationCap className="w-6 h-6 text-purple-400" />, tag: "Education", border: "hover:border-purple-500/50" },
+  { title: "Hospitality & POS Engines", desc: "Dynamic interactive menus, table reservation engines, and instantaneous kitchen order routing built for zero-latency restaurant operations.", icon: <Utensils className="w-6 h-6 text-emerald-400" />, tag: "Hospitality", border: "hover:border-emerald-500/50" },
+  { title: "Automated Booking Systems", desc: "Flawless appointment scheduling infrastructure equipped with multi-timezone synchronization, SMS reminders, and calendar integrations.", icon: <CalendarCheck className="w-6 h-6 text-amber-400" />, tag: "Service Industry", border: "hover:border-amber-500/50" },
+  { title: "Executive Web Footprints", desc: "Premium, ultra-fast minimalist web portfolios designed to establish undisputed market authority for elite corporate agencies and public figures.", icon: <Briefcase className="w-6 h-6 text-rose-400" />, tag: "Enterprise", border: "hover:border-rose-500/50" },
+  { title: "Application Hardening", desc: "Subjecting codebase architectures to rigorous offensive security auditing to neutralize SQL injection, cross-site scripting, and unauthorized API scraping.", icon: <Shield className="w-6 h-6 text-indigo-400" />, tag: "Cybersecurity", border: "hover:border-indigo-500/50" },
 ];
 
 const heroStats = [
@@ -113,7 +113,7 @@ const typewriterPhrases = [
 const TypewriterText = ({ phrases, isDark }) => {
   const [phraseIndex, setPhraseIndex] = useState(0);
   const [displayText, setDisplayText] = useState("");
- const [isDeleting, setIsDeleting] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     const currentPhrase = phrases[phraseIndex];
@@ -174,11 +174,10 @@ const Companion = ({ mousePos, isJumping, isDark }) => {
           initial={{ opacity: 0, y: 10, scale: 0.8 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: -10, scale: 0.8 }}
-          className={`mb-3 w-64 border-2 text-xs p-3.5 rounded-2xl shadow-2xl backdrop-blur-md pointer-events-auto cursor-pointer relative transition-colors duration-700 ${
-            isDark
+          className={`mb-3 w-64 border-2 text-xs p-3.5 rounded-2xl shadow-2xl backdrop-blur-md pointer-events-auto cursor-pointer relative transition-colors duration-700 ${isDark
               ? "bg-slate-900/95 border-cyan-500/60 text-slate-100 shadow-cyan-500/10"
               : "bg-white/95 border-amber-400/70 text-slate-800 shadow-amber-500/20"
-          }`}
+            }`}
           onClick={() => { setJokeIdx((prev) => (prev + 1) % jokes.length); playPopSound(); }}
         >
           <div className={`flex items-center gap-1.5 mb-1 font-mono font-bold text-[10px] ${isDark ? "text-cyan-400" : "text-amber-600"}`}>
@@ -186,18 +185,17 @@ const Companion = ({ mousePos, isJumping, isDark }) => {
             <span>CYBERPUP_AI // CLICK FOR JOKE</span>
           </div>
           <p className="font-sans leading-relaxed">{jokes[jokeIdx]}</p>
-          <div className={`absolute -bottom-2 right-10 w-4 h-4 border-b-2 border-r-2 rotate-45 transition-colors duration-700 ${
-            isDark ? "bg-slate-900 border-cyan-500/60" : "bg-white border-amber-400/70"
-          }`} />
+          <div className={`absolute -bottom-2 right-10 w-4 h-4 border-b-2 border-r-2 rotate-45 transition-colors duration-700 ${isDark ? "bg-slate-900 border-cyan-500/60" : "bg-white border-amber-400/70"
+            }`} />
         </motion.div>
       </AnimatePresence>
 
       <motion.div
-        animate={{ 
+        animate={{
           y: isJumping ? [-25, -65, 0] : [0, -10, 0],
           rotate: isJumping ? [0, 15, -15, 0] : [0, 0]
         }}
-        transition={{ 
+        transition={{
           y: isJumping ? { duration: 0.4, ease: "easeOut" } : { repeat: Infinity, duration: 3.5, ease: "easeInOut" },
           rotate: isJumping ? { duration: 0.4 } : {}
         }}
@@ -293,7 +291,7 @@ export default function App() {
   };
 
   const filteredTech = filter === "All" ? techStack : techStack.filter(t => t.category === filter);
-  
+
   const toggleTheme = (e) => {
     e.stopPropagation();
     setTheme((current) => current === 'dark' ? 'light' : 'dark');
@@ -346,7 +344,7 @@ export default function App() {
       />
 
       <div className="fixed top-6 left-0 right-0 z-40 flex justify-center px-6 pointer-events-none">
-        <motion.nav 
+        <motion.nav
           initial={{ y: -100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ type: "spring", stiffness: 300, damping: 20 }}
@@ -359,10 +357,10 @@ export default function App() {
 
           <div className={`hidden md:flex items-center gap-8 text-sm font-medium ${themeClasses.body} transition-colors duration-700`}>
             {['About', 'Services', 'Skills'].map((item) => (
-              <motion.a 
-                key={item} 
-                href={`#${item.toLowerCase()}`} 
-                onClick={(e) => { e.preventDefault(); scrollToSection(item.toLowerCase()); playPopSound(); }} 
+              <motion.a
+                key={item}
+                href={`#${item.toLowerCase()}`}
+                onClick={(e) => { e.preventDefault(); scrollToSection(item.toLowerCase()); playPopSound(); }}
                 whileHover={{ scale: 1.05 }}
                 className={`${isDark ? "hover:text-cyan-400" : "hover:text-amber-600"} transition-colors cursor-pointer`}
               >
@@ -377,15 +375,14 @@ export default function App() {
               whileTap={{ scale: 0.9 }}
               type="button"
               onClick={toggleTheme}
-              className={`h-11 w-11 rounded-full border flex items-center justify-center transition-all duration-500 hover:scale-105 ${
-                isDark ? "bg-slate-900 text-cyan-300 border-slate-700 shadow-lg shadow-cyan-500/10" : "bg-amber-50 text-amber-600 border-amber-200 shadow-lg shadow-amber-500/20"
-              }`}
+              className={`h-11 w-11 rounded-full border flex items-center justify-center transition-all duration-500 hover:scale-105 ${isDark ? "bg-slate-900 text-cyan-300 border-slate-700 shadow-lg shadow-cyan-500/10" : "bg-amber-50 text-amber-600 border-amber-200 shadow-lg shadow-amber-500/20"
+                }`}
             >
               {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
             </motion.button>
-            <motion.a 
-              href="#contact" 
-              onClick={(e) => { e.preventDefault(); scrollToSection('contact'); playPopSound(); }} 
+            <motion.a
+              href="#contact"
+              onClick={(e) => { e.preventDefault(); scrollToSection('contact'); playPopSound(); }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className={`hidden sm:inline-flex px-6 py-2.5 rounded-full bg-gradient-to-r ${themeClasses.primaryButton} font-extrabold text-xs uppercase tracking-wider transition-all shadow-lg cursor-pointer`}
@@ -519,8 +516,8 @@ export default function App() {
                   animate={{ backgroundPosition: ['0%', '100%', '0%'] }}
                   transition={{ duration: 4, repeat: Infinity }}
                   style={{
-                    backgroundImage: isDark 
-                      ? 'linear-gradient(90deg, #06b6d4, #14b8a6, #10b981, #06b6d4)' 
+                    backgroundImage: isDark
+                      ? 'linear-gradient(90deg, #06b6d4, #14b8a6, #10b981, #06b6d4)'
                       : 'linear-gradient(90deg, #f59e0b, #ff8c42, #ff6b9d, #f59e0b)',
                     backgroundSize: '200% 100%',
                   }}
@@ -566,18 +563,18 @@ export default function App() {
                 transition={{ delay: 0.56 }}
                 className="flex flex-wrap gap-4 justify-center lg:justify-start pt-1"
               >
-                <motion.a 
-                  href="#contact" 
-                  onClick={(e) => { e.preventDefault(); scrollToSection('contact'); playPopSound(); }} 
+                <motion.a
+                  href="#contact"
+                  onClick={(e) => { e.preventDefault(); scrollToSection('contact'); playPopSound(); }}
                   whileHover={{ scale: 1.05, y: -3 }}
                   whileTap={{ scale: 0.95 }}
                   className={`px-7 sm:px-8 py-4 rounded-2xl bg-gradient-to-r ${themeClasses.primaryButton} font-extrabold text-sm tracking-wide transition-all shadow-xl flex items-center gap-2 cursor-pointer`}
                 >
                   <span>Secure Your Project</span><ArrowRight className="w-4 h-4" />
                 </motion.a>
-                <motion.a 
-                  href="#services" 
-                  onClick={(e) => { e.preventDefault(); scrollToSection('services'); playPopSound(); }} 
+                <motion.a
+                  href="#services"
+                  onClick={(e) => { e.preventDefault(); scrollToSection('services'); playPopSound(); }}
                   whileHover={{ scale: 1.05, y: -3 }}
                   whileTap={{ scale: 0.95 }}
                   className={`px-7 sm:px-8 py-4 rounded-2xl ${themeClasses.secondaryButton} border font-bold text-sm tracking-wide transition-all flex items-center gap-2 cursor-pointer`}
@@ -653,7 +650,7 @@ export default function App() {
         </div>
       </section>
 
-      
+
       <section id="about" className={`py-36 px-6 border-t ${themeClasses.border} ${themeClasses.sectionAlt} relative z-10 transition-colors duration-700`}>
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
           <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="lg:col-span-7 space-y-6">
@@ -886,9 +883,9 @@ export default function App() {
               className={`absolute -right-20 -top-20 h-44 w-44 rounded-full border ${isDark ? "border-cyan-400/15" : "border-amber-400/25"}`}
             />
             <form onSubmit={handleSubmit} className="space-y-6">
-              <motion.input whileFocus={{ scale: 1.01 }} type="text" required value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} placeholder="Name" className={`w-full ${themeClasses.input} border rounded-xl px-5 py-4 text-sm relative z-10`} />
-              <motion.input whileFocus={{ scale: 1.01 }} type="email" required value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} placeholder="Email" className={`w-full ${themeClasses.input} border rounded-xl px-5 py-4 text-sm relative z-10`} />
-              <motion.textarea whileFocus={{ scale: 1.01 }} rows={5} required value={formData.scope} onChange={(e) => setFormData({...formData, scope: e.target.value})} placeholder="Project Details" className={`w-full ${themeClasses.input} border rounded-xl px-5 py-4 text-sm resize-none relative z-10`} />
+              <motion.input whileFocus={{ scale: 1.01 }} type="text" required value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} placeholder="Name" className={`w-full ${themeClasses.input} border rounded-xl px-5 py-4 text-sm relative z-10`} />
+              <motion.input whileFocus={{ scale: 1.01 }} type="email" required value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} placeholder="Email" className={`w-full ${themeClasses.input} border rounded-xl px-5 py-4 text-sm relative z-10`} />
+              <motion.textarea whileFocus={{ scale: 1.01 }} rows={5} required value={formData.scope} onChange={(e) => setFormData({ ...formData, scope: e.target.value })} placeholder="Project Details" className={`w-full ${themeClasses.input} border rounded-xl px-5 py-4 text-sm resize-none relative z-10`} />
               <motion.button
                 type="submit"
                 disabled={formStatus.loading}
